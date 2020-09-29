@@ -10,5 +10,5 @@ e.g.
 
 ./bin/pong -k id_garymenezes.pub
 
-./bin/ping -o bin/xposer.jwt -u http://localhost:80/ping
+./bin/ping -j bin/xposer.jwt -u http://localhost:8080/ping
 ```

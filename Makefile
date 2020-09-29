@@ -1,7 +1,10 @@
-test: test-jwtgen
+test: test-jwtgen test-ping
 
 test-jwtgen: build-jwtgen
 	go test garymenezes.com/xfinity-xposer/jwtgen
+
+test-ping: build-ping
+	go test garymenezes.com/xfinity-xposer/ping
 
 build: build-jwtgen build-ping build-pong
 
