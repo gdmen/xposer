@@ -19,20 +19,20 @@ func StartCommand(command string, args []string) (io.ReadCloser, io.ReadCloser, 
 	return stdout, stderr, cmd.Start(), cmd
 }
 
+func GetStringFromPipe(r io.Reader) (string, error) {
+	bytes, err := ioutil.ReadAll(r)
+	return string(bytes), err
+}
+
 func RunCommand(command string, args []string) (string, string, error) {
 	stdout, stderr, err, cmd := StartCommand(command, args)
-	bytesOut, err := ioutil.ReadAll(stdout)
+	outStr, err := GetStringFromPipe(stdout)
 	if err != nil {
 		return "", "", err
 	}
-	bytesErr, err := ioutil.ReadAll(stderr)
+	errStr, err := GetStringFromPipe(stderr)
 	if err != nil {
-		return "", "", err
+		return outStr, errStr, err
 	}
-	strOut := string(bytesOut)
-	strErr := string(bytesErr)
-	if err != nil {
-		return strOut, strErr, err
-	}
-	return strOut, strErr, cmd.Wait()
+	return outStr, errStr, cmd.Wait()
 }

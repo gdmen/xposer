@@ -12,39 +12,39 @@ const (
 )
 
 func TestHelp(t *testing.T) {
-	stdout, stderr, err := test.RunCommand(TESTCMD, []string{"-h"})
-	if err == nil || err.Error() != "exit status 2" || !strings.Contains(stderr, "Usage of") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err := test.RunCommand(TESTCMD, []string{"-h"})
+	if err == nil || err.Error() != "exit status 2" || !strings.Contains(errStr, "Usage of") {
+		t.Error(outStr, errStr, err)
 	}
 }
 
 func TestFlags(t *testing.T) {
-	stdout, stderr, err := test.RunCommand(TESTCMD, nil)
-	if err == nil || err.Error() != "exit status 1" || !strings.Contains(stderr, "no such file or directory") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err := test.RunCommand(TESTCMD, nil)
+	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "no such file or directory") {
+		t.Error(outStr, errStr, err)
 	}
 
-	stdout, stderr, err = test.RunCommand(TESTCMD, []string{"-test"})
-	if err == nil || err.Error() != "exit status 1" || !strings.Contains(stderr, "no such file or directory") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"-test"})
+	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "no such file or directory") {
+		t.Error(outStr, errStr, err)
 	}
 
-	stdout, stderr, err = test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt"})
-	if err != nil || !strings.Contains(stderr, "Failed to connect") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt"})
+	if err != nil || !strings.Contains(errStr, "Failed to connect") {
+		t.Error(outStr, errStr, err)
 	}
 }
 
 func TestBadURL(t *testing.T) {
-	stdout, stderr, err := test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt", "-u", "garbage"})
-	if err != nil || !strings.Contains(stderr, "unsupported") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err := test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt", "-u", "garbage"})
+	if err != nil || !strings.Contains(errStr, "unsupported") {
+		t.Error(outStr, errStr, err)
 	}
 }
 
 func TestSuccess(t *testing.T) {
-	stdout, stderr, err := test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt", "-u", "http://localhost:1234/ping"})
-	if err != nil || !strings.Contains(stderr, "connection refused") {
-		t.Error(stdout, stderr, err)
+	outStr, errStr, err := test.RunCommand(TESTCMD, []string{"-test", "-j", "../test/test.jwt", "-u", "http://localhost:1234/ping"})
+	if err != nil || !strings.Contains(errStr, "connection refused") {
+		t.Error(outStr, errStr, err)
 	}
 }
