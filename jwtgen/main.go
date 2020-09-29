@@ -11,8 +11,8 @@ import (
 	"garymenezes.com/xfinity-xposer/common"
 )
 
-func fatal(msg interface{}) {
-	fmt.Println(msg)
+func fatal(msg string) {
+	fmt.Fprintln(os.Stderr, msg)
 	os.Exit(1)
 }
 
@@ -29,11 +29,11 @@ func main() {
 	}
 	signBytes, err := ioutil.ReadFile(privKeyPath)
 	if err != nil {
-		fatal(err)
+		fatal(err.Error())
 	}
 	signKey, err := jwt.ParseRSAPrivateKeyFromPEM(signBytes)
 	if err != nil {
-		fatal(err)
+		fatal(err.Error())
 	}
 
 	claims := common.XposerClaims{
@@ -45,10 +45,10 @@ func main() {
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	signed, err := token.SignedString(signKey)
 	if err != nil {
-		fatal(err)
+		fatal(err.Error())
 	}
 	err = ioutil.WriteFile(jwtOut, []byte(signed), 0700)
 	if err != nil {
-		fatal(err)
+		fatal(err.Error())
 	}
 }
