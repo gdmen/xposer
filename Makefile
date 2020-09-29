@@ -1,14 +1,3 @@
-test: test-jwtgen test-ping test-pong
-
-test-jwtgen: build-jwtgen
-	go test garymenezes.com/xfinity-xposer/jwtgen
-
-test-ping: build-ping
-	go test garymenezes.com/xfinity-xposer/ping
-
-test-pong: build-pong-test
-	go test garymenezes.com/xfinity-xposer/pong
-
 build: build-jwtgen build-ping build-pong
 
 build-jwtgen:
@@ -23,6 +12,17 @@ build-pong:
 
 build-pong-test:
 	go build -o bin/test_pong garymenezes.com/xfinity-xposer/pong
+
+test: test-jwtgen test-ping test-pong
+
+test-jwtgen: build-jwtgen
+	go test garymenezes.com/xfinity-xposer/jwtgen
+
+test-ping: build-ping
+	go test garymenezes.com/xfinity-xposer/ping
+
+test-pong: build-pong-test
+	go test garymenezes.com/xfinity-xposer/pong
 
 clean:
 	rm -r bin/*
