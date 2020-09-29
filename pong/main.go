@@ -38,9 +38,15 @@ func jwtMiddleware(key *rsa.PublicKey) gin.HandlerFunc {
 func main() {
 	var pubKeyPath string
 	flag.StringVar(&pubKeyPath, "k", "", "public key path")
+	var test bool
+	flag.BoolVar(&test, "test", false, "whether to run in test mode")
 	flag.Parse()
 	if pubKeyPath == "" {
 		log.Fatal("you must enter a public key path")
+	}
+
+	if !test {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
 	verifyBytes, err := ioutil.ReadFile(pubKeyPath)

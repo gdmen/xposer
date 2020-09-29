@@ -26,6 +26,11 @@ func TestFlags(t *testing.T) {
 	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "you must enter a public key path") {
 		t.Error(outStr, errStr, err)
 	}
+
+	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"--test"})
+	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "you must enter a public key path") {
+		t.Error(outStr, errStr, err)
+	}
 }
 
 func TestBadKeys(t *testing.T) {
@@ -41,7 +46,7 @@ func TestBadKeys(t *testing.T) {
 }
 
 func TestSuccess(t *testing.T) {
-	stdout, stderr, err, cmd := test.StartCommand(TESTCMD, []string{"-k", "../test/test.pub"})
+	stdout, stderr, err, cmd := test.StartCommand(TESTCMD, []string{"--test", "-k", "../test/test.pub"})
 	var outStr, errStr string
 	if err != nil {
 		outStr, _ = test.GetStringFromPipe(stdout)
