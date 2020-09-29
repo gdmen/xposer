@@ -1,5 +1,8 @@
 # Xfinity Xposer
 
+ssh-keygen -t rsa -b 4096 -m PEM -f key.pem
+openssl rsa -in key.pem -pubout -outform PEM -out key.pub
+
 e.g.
 
 ```

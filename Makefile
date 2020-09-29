@@ -1,7 +1,12 @@
-build: build-keygen build-ping build-pong
+test: test-jwtgen
 
-build-keygen:
-	go build -o bin/keygen garymenezes.com/xfinity-xposer
+test-jwtgen: build-jwtgen
+	go test garymenezes.com/xfinity-xposer/jwtgen
+
+build: build-jwtgen build-ping build-pong
+
+build-jwtgen:
+	go build -o bin/jwtgen garymenezes.com/xfinity-xposer/jwtgen
 
 build-ping:
 	go build -o bin/ping garymenezes.com/xfinity-xposer/ping
