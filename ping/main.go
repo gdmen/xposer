@@ -15,7 +15,7 @@ func main() {
 	var timeout int
 	flag.IntVar(&timeout, "t", 5, "timeout between pings (seconds)")
 	var jwtPath string
-	flag.StringVar(&jwtPath, "o", "xposer.jwt", "path to signed jwt")
+	flag.StringVar(&jwtPath, "o", "bin/xposer.jwt", "path to signed jwt")
 	flag.Parse()
 	jwt, err := ioutil.ReadFile(jwtPath)
 	if err != nil {

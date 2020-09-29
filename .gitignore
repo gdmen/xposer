@@ -1,5 +1,8 @@
 # Editor files
 *.swp
 
+# Binaries
+bin/
+
 # Secret files
 *.jwt

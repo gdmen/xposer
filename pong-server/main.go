@@ -39,6 +39,9 @@ func main() {
 	var pubKeyPath string
 	flag.StringVar(&pubKeyPath, "k", "", "public key path")
 	flag.Parse()
+	if pubKeyPath == "" {
+		log.Fatal("you must enter a public key path")
+	}
 
 	verifyBytes, err := ioutil.ReadFile(pubKeyPath)
 	if err != nil {
