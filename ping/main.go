@@ -29,6 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 	req.Header.Add("Authorization", "Bearer "+string(jwt))
+	req.Header.Add("Accept-Encoding", "application/json")
 
 	for {
 		resp, err := client.Do(req)
