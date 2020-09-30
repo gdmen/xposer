@@ -61,8 +61,6 @@ func main() {
 	r := gin.Default()
 	r.Use(jwtMiddleware(verifyKey))
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "ok")
-	})
+	r.GET("/ping", handlePing)
 	log.Fatal(r.Run(":8080"))
 }
