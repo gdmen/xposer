@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"garymenezes.com/xfinity-xposer/test"
+	"garymenezes.com/xposer/test"
 )
 
 const (

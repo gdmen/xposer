@@ -1,4 +1,4 @@
-module garymenezes.com/xfinity-xposer
+module garymenezes.com/xposer
 
 go 1.14
 

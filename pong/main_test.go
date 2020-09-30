@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"garymenezes.com/xfinity-xposer/test"
+	"garymenezes.com/xposer/test"
 )
 
 const (

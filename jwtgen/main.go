@@ -8,7 +8,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 
-	"garymenezes.com/xfinity-xposer/common"
+	"garymenezes.com/xposer/common"
 )
 
 func fatal(msg string) {
