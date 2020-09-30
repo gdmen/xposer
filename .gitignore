@@ -6,3 +6,5 @@ bin/
 
 # Secret files
 *.jwt
+conf.json
+test_conf.json

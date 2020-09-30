@@ -25,30 +25,35 @@ func TestHelp(t *testing.T) {
 
 func TestFlags(t *testing.T) {
 	outStr, errStr, err := test.RunCommand(TESTCMD, nil)
-	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "you must enter a public key path") {
+	if err == nil || err.Error() != "exit status 255" || !strings.Contains(errStr, "you must enter a public key path") {
 		t.Error(outStr, errStr, err)
 	}
 
 	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"--test"})
-	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "you must enter a public key path") {
+	if err == nil || err.Error() != "exit status 255" || !strings.Contains(errStr, "you must enter a public key path") {
+		t.Error(outStr, errStr, err)
+	}
+
+	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"-k", "../test/test.pem"})
+	if err == nil || err.Error() != "exit status 255" || !strings.Contains(errStr, "couldn't read config") {
 		t.Error(outStr, errStr, err)
 	}
 }
 
 func TestBadKeys(t *testing.T) {
-	outStr, errStr, err := test.RunCommand(TESTCMD, []string{"-k", "../test/test.pem"})
-	if err == nil || err.Error() != "exit status 1" {
+	outStr, errStr, err := test.RunCommand(TESTCMD, []string{"-c", "../test/test_conf.json", "-k", "../test/test.pem"})
+	if err == nil || err.Error() != "exit status 255" {
 		t.Error(outStr, errStr, err)
 	}
 
-	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"-k", "main.go"})
-	if err == nil || err.Error() != "exit status 1" || !strings.Contains(errStr, "Invalid Key") {
+	outStr, errStr, err = test.RunCommand(TESTCMD, []string{"-c", "../test/test_conf.json", "-k", "main.go"})
+	if err == nil || err.Error() != "exit status 255" || !strings.Contains(errStr, "Invalid Key") {
 		t.Error(outStr, errStr, err)
 	}
 }
 
 func startServer(t *testing.T) (io.ReadCloser, io.ReadCloser, *exec.Cmd) {
-	stdout, stderr, err, cmd := test.StartCommand(TESTCMD, []string{"--test", "-k", "../test/test.pub"})
+	stdout, stderr, err, cmd := test.StartCommand(TESTCMD, []string{"--test", "-c", "../test/test_conf.json", "-k", "../test/test.pub"})
 	if err != nil {
 		outStr, _ := test.GetStringFromPipe(stdout)
 		errStr, _ := test.GetStringFromPipe(stderr)

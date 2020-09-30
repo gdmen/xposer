@@ -25,7 +25,8 @@ test-pong: build-pong-test
 	go test garymenezes.com/xposer/pong
 
 clean:
-	rm -r bin/*
+	rm -rf bin/*
+	go mod tidy
 
 deploy-pong:
 	./pong/deploy.sh gmenezes@35.212.165.198 /Volumes/sensitive/keys/id_garymenezes.pub
