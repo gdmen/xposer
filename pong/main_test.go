@@ -1,8 +1,10 @@
 package main
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os/exec"
 	"strings"
 	"testing"
 	"time"
@@ -45,17 +47,29 @@ func TestBadKeys(t *testing.T) {
 	}
 }
 
-func TestSuccess(t *testing.T) {
+func startServer(t *testing.T) (io.ReadCloser, io.ReadCloser, *exec.Cmd) {
 	stdout, stderr, err, cmd := test.StartCommand(TESTCMD, []string{"--test", "-k", "../test/test.pub"})
-	var outStr, errStr string
 	if err != nil {
-		outStr, _ = test.GetStringFromPipe(stdout)
-		errStr, _ = test.GetStringFromPipe(stderr)
+		outStr, _ := test.GetStringFromPipe(stdout)
+		errStr, _ := test.GetStringFromPipe(stderr)
 		t.Error(outStr, errStr, err)
 	}
 
 	// The test server should be running after this sleep
 	time.Sleep(1 * time.Second)
+
+	return stdout, stderr, cmd
+}
+
+func stopServer(t *testing.T, cmd *exec.Cmd) {
+	// Stop the process
+	if err := cmd.Process.Kill(); err != nil {
+		t.Error("Couldn't kill test process: ", err)
+	}
+}
+
+func TestPing(t *testing.T) {
+	_, _, cmd := startServer(t)
 
 	// Make some test HTTP requests
 	client := &http.Client{}
@@ -132,7 +146,7 @@ func TestSuccess(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	// Success
+	// Valid call
 	req.Header.Set("Authorization", "Bearer "+string(jwt))
 	resp, err = client.Do(req)
 	if err != nil {
@@ -145,8 +159,7 @@ func TestSuccess(t *testing.T) {
 		}
 	}
 
-	// Stop the process
-	if err = cmd.Process.Kill(); err != nil {
-		t.Error("Couldn't kill test process: ", err)
-	}
+	stopServer(t, cmd)
+
+	// Validate the database state
 }
