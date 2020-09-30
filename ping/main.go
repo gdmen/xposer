@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -34,15 +33,16 @@ func main() {
 	for {
 		resp, err := client.Do(req)
 		if err != nil {
-			log.Print(fmt.Sprintf("Failed to connect: %s", err))
+			log.Printf("Failed to connect: %s", err)
 		} else {
 			defer resp.Body.Close()
 			if resp.StatusCode != http.StatusOK {
 				body, err := ioutil.ReadAll(resp.Body)
 				if err != nil {
-					log.Fatal(err)
+					log.Printf("Couldn't read body: %s", err)
+				} else {
+					log.Printf("Failed to connect: %s", body)
 				}
-				log.Print(fmt.Sprintf("Failed to connect: %s", body))
 			}
 		}
 		if testing {
