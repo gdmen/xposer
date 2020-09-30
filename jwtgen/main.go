@@ -17,8 +17,8 @@ func fatal(msg string) {
 }
 
 func main() {
-	var device string
-	flag.StringVar(&device, "d", "", "name for the connecting device")
+	var deviceName string
+	flag.StringVar(&deviceName, "d", "", "name for the connecting device")
 	var privKeyPath string
 	flag.StringVar(&privKeyPath, "k", "", "private key path")
 	var jwtOut string
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	claims := common.XposerClaims{
-		Device: device,
+		DeviceName: deviceName,
 		StandardClaims: jwt.StandardClaims{
 			Issuer: "garymenezes.com",
 		},
