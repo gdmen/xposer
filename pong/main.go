@@ -14,6 +14,7 @@ import (
 	"github.com/golang/glog"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	"garymenezes.com/xposer/common"
 )
@@ -55,8 +56,8 @@ func main() {
 	flag.StringVar(&pubKeyPath, "k", "", "public key path")
 	var config string
 	flag.StringVar(&config, "c", "pong/conf.json", "config file path")
-	var test bool
-	flag.BoolVar(&test, "test", false, "whether to run in test mode")
+	var testMode bool
+	flag.BoolVar(&testMode, "test", false, "whether to run in test mode")
 	flag.Parse()
 	if pubKeyPath == "" {
 		glog.Fatal("you must enter a public key path")
@@ -69,7 +70,12 @@ func main() {
 
 	// Connect to MySQL database
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", c.MySQLUser, c.MySQLPass, c.MySQLHost, c.MySQLPort, c.MySQLDatabase)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	gConf := &gorm.Config{}
+	if !testMode {
+		gConf.Logger = logger.Default.LogMode(logger.Error)
+	}
+	db, err := gorm.Open(mysql.Open(dsn), gConf)
 	if err != nil {
 		glog.Fatal("Failed to connect to database: ", err)
 	}
@@ -78,7 +84,7 @@ func main() {
 	db.AutoMigrate(&Ping{})
 
 	// Set GIN release mode
-	if !test {
+	if !testMode {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
