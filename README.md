@@ -6,7 +6,7 @@ openssl rsa -in key.pem -pubout -outform PEM -out key.pub
 e.g.
 
 ```
-./bin/keygen -d raspberry -k id_garymenezes.pem
+./bin/jwtgen -d raspberry -k id_garymenezes.pem
 
 ./bin/pong -k id_garymenezes.pub
 

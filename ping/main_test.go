@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	TESTCMD = "../bin/ping"
+	TESTCMD = "../bin/test_ping"
 )
 
 func TestHelp(t *testing.T) {
